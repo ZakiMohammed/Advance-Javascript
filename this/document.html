@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document 1</title>
+</head>
+<body>
+    <h4>this: in object method</h4>
+    <p id="content1"></p>
+
+    <h4>this: alone</h4>
+    <p id="content2"></p>
+
+    <h4>this: in function 1</h4>
+    <p id="content3"></p>
+
+    <h4>this: in function 2 (strict)</h4>
+    <p id="content4"></p>
+
+    <h4>this: in Event Handlers</h4>
+    <button type="button" onclick="onButtonClick(this)" value="Hello World">Click Now</button>
+    <p id="content5"></p>
+
+    <h4>this: with Methods like call(), and apply() can refer this to any object</h4>
+    <p id="content6"></p>
+
+    <script>
+
+        /** this: in object method */
+
+        var person = {
+            firstName: 'John',
+            lastName: 'Marshal',
+            fullName: function () {
+                return this.firstName + ' ' + this.lastName;
+            }
+        };    
+
+        document.getElementById('content1').innerHTML = person.fullName();
+
+        /** this: alone */      
+
+        document.getElementById('content2').innerHTML = this;
+
+        /** this: in function 1 */
+
+        function myFunction1() {
+            return this;
+        }
+
+        document.getElementById('content3').innerHTML = myFunction1();
+
+        /** this: in function 2 */
+
+        function myFunction2() {
+            "use strict";
+            return this;
+        }
+
+        document.getElementById('content4').innerHTML = myFunction2();
+
+        /** this: in Event Handlers */
+
+        function onButtonClick(element) {
+            document.getElementById('content5').innerHTML = element.innerHTML;
+        }
+
+        /** this: with Methods like call(), and apply() can refer this to any object */
+
+        var person1 = {
+            fullName: function() {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+        var person2 = {
+            firstName:"Allen",
+            lastName: "Green",
+        }
+
+        document.getElementById('content6').innerHTML = person1.fullName.call(person2);
+        // document.getElementById('content6').innerHTML = person1.fullName.apply(person2);
+
+    </script>
+</body>
+</html>
