@@ -10,6 +10,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -18,30 +19,65 @@
         <div class="row">
             <div class="col">
                 <h4 class="mb-3">XHR - XMLHttpRequest</h4>
-                <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modalAdd">Add New</button>
+                <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal"
+                    data-target="#modalAction">Add New</button>
                 <ul id="lstPost" class="list-group"></ul>
             </div>
         </div>
     </div>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+
+    <!-- Action Modal -->
+    <div class="modal fade" id="modalAction" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add New Post</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    Body
+                    <div>
+                        <input type="hidden" id="hidId" value="0">
+                        <div class="form-group">
+                            <label for="txtTitle">Title</label>
+                            <input type="text" name="txtTitle" id="txtTitle" class="form-control"
+                                placeholder="Enter title">
+                            <div class="invalid-feedback">
+                                <span>This field is required</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtBody">Body</label>
+                            <textarea name="txtBody" id="txtBody" rows="3" class="form-control"
+                                placeholder="Enter body"></textarea>
+                            <div class="invalid-feedback">
+                                <span>This field is required</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button id="btnSave" type="button" class="btn btn-primary" onclick="save(this)">
+                        Save
+                    </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Message Toast -->
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: absolute; top: 10px; right: 10px;">
+        <div class="toast-header">            
+            <strong class="mr-auto">Message</strong>            
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            <span class="toast-message"></span>
         </div>
     </div>
 
