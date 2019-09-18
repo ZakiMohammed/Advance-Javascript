@@ -43,8 +43,9 @@ window.onload = function (ev) {
 
 function save(event) {
     
+    let hidId    = document.getElementById('hidId');
     let txtTitle = document.getElementById('txtTitle');
-    let txtBody = document.getElementById('txtBody');
+    let txtBody  = document.getElementById('txtBody');
     let hasError = false;
 
     if (!txtTitle || txtTitle.value === '') {
@@ -58,7 +59,7 @@ function save(event) {
         return;
     }
 
-    let dto = { title: txtTitle.value, body: txtBody.value };
+    let dto = { id: hidId.value, title: txtTitle.value, body: txtBody.value };
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function () {
@@ -68,31 +69,56 @@ function save(event) {
         if (this.readyState === 4) {
             document.getElementById('btnSave').innerHTML = 'Save';
             if (this.status === 201) {
-                let html = `
-                    <li class="list-group-item">
-                        <h5>${dto.title}</h5>
-                        <p>${dto.body}</p>
-                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modalAction">Edit</button>
-                    </li>`;
-                html += document.getElementById('lstPost').innerHTML;
-                document.getElementById('lstPost').innerHTML = html;
+                let html = '';
+                
+                if (hidId.value == 0 || hidId == '0') {
+                    html = `
+                        <li class="list-group-item">
+                            <input type="hidden" value="${dto.id}"></input>
+                            <h5>${dto.title}</h5>
+                            <p>${dto.body}</p>
+                            <button type="button" class="btn btn-sm btn-warning" onclick="edit(this)">Edit</button>
+                        </li>`;
+                    html += document.getElementById('lstPost').innerHTML;
+                    document.getElementById('lstPost').innerHTML = html;
+                } else {
+                    html = `
+                        <li class="list-group-item">
+                            <input type="hidden" value="${post.id}"></input>
+                            <h5>${dto.title}</h5>
+                            <p>${dto.body}</p>
+                            <button type="button" class="btn btn-sm btn-warning" onclick="edit(this)">Edit</button>
+                        </li>`;
+                    html += document.getElementById('lstPost').innerHTML;
+                    document.getElementById('lstPost').innerHTML = html;
+                }
 
                 modal('hide');
                 toast(MESSAGE.SAVE);
             }
         }
     };
-    xhr.open('POST', API_URL + 'posts');
+    if (hidId.value == 0 || hidId == '0') {
+        xhr.open('POST', API_URL + 'posts');
+    } else {
+        xhr.open('PUT', API_URL + 'posts/' + hidId.value);
+    }
     xhr.send(JSON.stringify(dto));
 }
 function edit(event) {
-    let id = event.parentElement.getElementsByTagName('input')[0].value;
+    let id    = event.parentElement.getElementsByTagName('input')[0].value;
     let title = event.parentElement.getElementsByTagName('h5')[0].innerHTML;
-    let body = event.parentElement.getElementsByTagName('p')[0].innerHTML;
+    let body  = event.parentElement.getElementsByTagName('p')[0].innerHTML;
 
     document.getElementById('hidId').value = id;
     document.getElementById('txtTitle').value = title;
     document.getElementById('txtBody').value = body;
+
+    console.log('😁', {
+        id: id,
+        title: title,
+        body: body
+    });
 
     modal('show');
 }
